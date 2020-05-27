@@ -2,9 +2,10 @@ from flask import send_from_directory, current_app
 from flask_login import current_user
 
 from app import db
-from app.models import User, Upload, Download, Assignment, Comment, CommentFileUpload, LibraryUpload, ClassLibraryFile, Enrollment, Turma, LibraryDownload, AssignmentTaskFile
+from app.models import User, Upload, Download, Assignment, Comment, CommentFileUpload, LibraryUpload, ClassLibraryFile, Enrollment, Turma, LibraryDownload
+
 import app.files
-import app.assignments 
+
 from werkzeug import secure_filename
 
 import os, uuid, arrow
@@ -230,22 +231,6 @@ def download_library_file (library_upload_id):
 
 def get_total_downloads_for_user (user_id):
 	return LibraryDownload.query.filter(LibraryDownload.user_id == user_id).count()
-
-def download_assignment_task_file (assignment_id):
-	if db.session.query(Assignment, AssignmentTaskFile).join(
-		AssignmentTaskFile, Assignment.assignment_task_file_id ==  AssignmentTaskFile.id).filter(
-		Assignment.id == assignment_id).first() is not None:
-		
-		result = db.session.query(Assignment, AssignmentTaskFile).join(
-		AssignmentTaskFile, Assignment.assignment_task_file_id ==  AssignmentTaskFile.id).filter(
-		Assignment.id == assignment_id).first()
-		
-		return send_from_directory(filename=result.AssignmentTaskFile.filename,
-								   directory=current_app.config['UPLOAD_FOLDER'],
-								   as_attachment = True,
-								   attachment_filename = result.AssignmentTaskFile.original_filename)
-	else:
-		return False
 	
 
 # Saves a file to uplaods folder, returns secure filename

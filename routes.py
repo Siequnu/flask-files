@@ -301,19 +301,6 @@ def view_library_downloads(library_upload_id):
 								library_downloads = library_downloads)
 	abort (403)
 
-# Route to download a library file
-@bp.route('/assignments/download/taskfile/<assignment_id>')
-@login_required
-def download_assignment_file(assignment_id):
-	# Check if the user is part of this file's class
-	if app.models.is_admin(current_user.username) or db.session.query(
-		Enrollment, Assignment).join(
-		Assignment, Enrollment.turma_id == Assignment.target_turma_id).filter(
-		Enrollment.user_id == current_user.id).filter(
-		Assignment.id == assignment_id).first() is not None:
-			return app.files.models.download_assignment_task_file (assignment_id)
-	abort (403)
-
 # Admin form to upload a library file
 @bp.route('/library/upload/', methods=['GET', 'POST'])
 @login_required
