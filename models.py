@@ -75,15 +75,15 @@ def get_thumbnail (filename):
 			filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-word.pdf'))
 		elif file_extension == 'ppt' or file_extension == 'pptx' or file_extension == 'key':
 			filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-powerpoint.pdf'))
-		elif file_extension == 'jpeg' or file_extension == 'jpg':
-			filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-image.pdf'))
+		elif file_extension == 'jpeg' or file_extension == 'jpg' or file_extension == 'png':
+			#filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-image.pdf')) # Why not make a thumnail out of the image?
+			filepath = (os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
 		elif file_extension == 'zip' or file_extension == 'rar':
 			filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-archive.pdf'))
 		elif file_extension == 'pdf':
 			filepath = (os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
 		else:
 			filepath = (os.path.join(current_app.config['THUMBNAIL_FOLDER'], 'file-blank.pdf'))
-		
 		
 		with(Image(filename=filepath, resolution=current_app.config['THUMBNAIL_RESOLUTION'])) as source: 
 			images = source.sequence
