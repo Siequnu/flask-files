@@ -150,6 +150,8 @@ def download (file_id):
 	if current_user.id is models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
 		filename = Upload.query.get(file_id).filename
 		return models.download_file(filename, rename=True)
+	else:
+		abort (404)
 
 # Student form to upload a file to an assignment.
 # An admin can override this with a student number, to submit work for them.
