@@ -149,8 +149,12 @@ def download_file(assignment_id):
 @login_required
 def download (file_id):
 	if current_user.id is models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
-		filename = Upload.query.get(file_id).filename
-		return models.download_file(filename, rename=True)
+		file = Upload.query.get(file_id)
+		if file is not None:
+			filename = file.filename
+			return models.download_file(filename, rename=True)
+		else:
+			abort (404)
 	else:
 		abort (404)
 
