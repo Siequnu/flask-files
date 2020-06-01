@@ -122,6 +122,7 @@ def delete_file(upload_id):
 			app.files.models.delete_upload(upload_id)
 			# Delete any comments for this upload ID
 			app.assignments.models.delete_all_comments_from_upload_id(upload_id)
+			flash ('The file, and any associated comments or comment uploads were successfully deleted.', 'success')
 			return redirect(url_for('files.file_stats'))
 		return render_template('confirmation_form.html',
 							   title = 'Delete file?',
