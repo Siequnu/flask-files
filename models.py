@@ -138,7 +138,11 @@ def get_uploaded_file_count_from_user_id (user_id):
 	return Upload.query.filter_by(user_id=current_user.id).count()
 
 def get_file_owner_id (file_id):
-	return Upload.query.get(file_id).user_id
+	file = Upload.query.get (file_id)
+	if file is not None:
+		return Upload.query.get(file_id).user_id
+	else:
+		return 0 # No user can have user_id == 0, this starts at 1
 
 def get_peer_reviews_from_upload_id (upload_id):
 	comments = Comment.query.filter_by(file_id=upload_id).filter_by(pending=False).all()

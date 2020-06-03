@@ -127,6 +127,7 @@ def delete_file(upload_id):
 			app.files.models.delete_upload(upload_id)
 			# Delete any comments for this upload ID
 			app.assignments.models.delete_all_comments_from_upload_id(upload_id)
+			flash ('The file, and any associated comments or comment uploads were successfully deleted.', 'success')
 			return redirect(url_for('files.file_stats'))
 		return render_template('confirmation_form.html',
 							   title = 'Delete file?',
@@ -153,8 +154,14 @@ def download_file(assignment_id):
 @login_required
 def download (file_id):
 	if current_user.id is models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
-		filename = Upload.query.get(file_id).filename
-		return models.download_file(filename, rename=True)
+		file = Upload.query.get(file_id)
+		if file is not None:
+			filename = file.filename
+			return models.download_file(filename, rename=True)
+		else:
+			abort (404)
+	else:
+		abort (404)
 
 # Student form to upload a file to an assignment.
 # An admin can override this with a student number, to submit work for them.
