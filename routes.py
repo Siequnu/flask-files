@@ -9,6 +9,11 @@ from app.models import Comment, Download, Upload, Turma, ClassLibraryFile, Enrol
 
 import random, os, re
 
+# Render this blueprint's javascript
+@bp.route("/js")
+@login_required
+def js():
+    return render_template('js/class_library.js')
 
 # Access file stats
 @bp.route("/uploads")
