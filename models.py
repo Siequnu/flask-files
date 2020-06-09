@@ -27,20 +27,21 @@ def new_library_files_since_last_seen ():
 		else: return False
 	except:
 		return False
-	
-def new_library_upload_from_form (form):
-	file = form.library_upload_file.data
+
+
+def new_library_upload (file, title, description, target_turmas):
 	random_filename = app.files.models.save_file(file)
 	original_filename = app.files.models.get_secure_filename(file.filename)
-	library_upload = LibraryUpload (original_filename=original_filename,
-											   filename = random_filename,
-											   title = form.title.data,
-											   description = form.description.data,
-											   user_id = current_user.id)
+	library_upload = LibraryUpload (
+		original_filename=original_filename,
+		filename = random_filename,
+		title = title,
+		description = description,
+		user_id = current_user.id)
 	db.session.add(library_upload)
 	db.session.flush() # Needed to access the library_upload.id in the next step
 	
-	for turma_id in form.target_turmas.data:
+	for turma_id in target_turmas:
 		new_class_library_file = ClassLibraryFile(library_upload_id = library_upload.id, turma_id = turma_id)
 		db.session.add(new_class_library_file)
 		db.session.commit()

@@ -321,7 +321,12 @@ def upload_library_file():
 		form = forms.LibraryUploadForm()
 		form.target_turmas.choices = [(turma.id, turma.turma_label) for turma in Turma.query.all()]
 		if form.validate_on_submit():
-			app.files.models.new_library_upload_from_form(form)
+			file = form.library_upload_file.data
+			description = form.description.data
+			title = form.title.data
+			target_turmas = form.target_turmas.data
+			app.files.models.new_library_upload (
+				file, title, description, target_turmas)
 			flash('New file successfully added to the library!', 'success')
 			return redirect(url_for('files.class_library'))
 		return render_template('files/upload_library_file.html', title='Upload library file', form=form)
