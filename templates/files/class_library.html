@@ -61,7 +61,7 @@
   <br>
   <br>
   <a href="{{url_for('files.upload_library_file')}}" 
-     <button class="btn btn-success">
+     <button class="btn btn-secondary">
   <i class="fa fa-file-upload">
   </i> Upload new library file 
   </button>
@@ -119,15 +119,14 @@
 <div class="container">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     {% for class in classes %}
-    {% if loop.index 
-    <=1 %}
+    {% if loop.index ==1 %}
        <li class="nav-item">
-    <a class="nav-link active" id="{{class.id}}-tab" data-toggle="tab" href="#{{class.id}}" role="tab" aria-controls="{{class.id}}" aria-selected="true">{{class.turma_label}}
+    <a class="nav-link active" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab" aria-controls="class-{{class.id}}" aria-selected="true">{{class.turma_label}}
     </a>
     </li>
   {% else %}
   <li class="nav-item">
-    <a class="nav-link" id="{{class.id}}-tab" data-toggle="tab" href="#{{class.id}}" role="tab" aria-controls="{{class.id}}" aria-selected="false">{{class.turma_label}}
+    <a class="nav-link" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab" aria-controls="class-{{class.id}}" aria-selected="false">{{class.turma_label}}
     </a>
   </li>
   {% endif %}
@@ -135,11 +134,10 @@
   </ul>
 <div class="tab-content" id="myTabContent">
   {% for class in classes %}
-  {% if loop.index
-  <=1 %}
-     <div class="tab-pane fade show active" id="{{class.id}}" role="tabpanel" aria-labelledby="{{class.id}}-tab">
+  {% if loop.index ==1 %}
+     <div class="tab-pane fade show active" id="class-{{class.id}}" role="tabpanel" aria-labelledby=class-{{class.id}}-tab">
   {% else %}
-  <div class="tab-pane fade" id="{{class.id}}" role="tabpanel" aria-labelledby="{{class.id}}-tab">
+  <div class="tab-pane fade" id="class-{{class.id}}" role="tabpanel" aria-labelledby="class-{{class.id}}-tab">
     {% endif %}
     <br>
     <div class="row">
@@ -160,18 +158,18 @@
           <div class="library_card-read-more">
             <div class="row">
               <div class="col-xs-12 col-lg-6">
-                <p>
-                  <a href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}" 
-                     <button class="btn btn-sm btn-block btn-outline-primary">
+                
+                  <a href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}">
+                     <button class="btn btn-lg btn-block btn-outline-secondary">
                   <i class="fa fa-fw fa-download">
                   </i> Download
                 </button>
               </a>
-            </p>
+            
         </div>
         <div class="col-xs-12 col-lg-6">
           
-            <button class="btn btn-primary float-right dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary float-right dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class ="fa fa-ellipsis-h">
               </i>
             </button>
@@ -214,12 +212,12 @@
     {% if loop.index
     <=1 %}
        <li class="nav-item">
-    <a class="nav-link active" id="{{enrollment.id}}-tab" data-toggle="tab" href="#{{enrollment.id}}" role="tab" aria-controls="{{enrollment.id}}" aria-selected="true">{{turma.turma_label}}
+    <a class="nav-link active" id="enrollment-{{enrollment.id}}-tab" data-toggle="tab" href="#enrollment-{{enrollment.id}}" role="tab" aria-controls="enrollment-{{enrollment.id}}" aria-selected="true">{{turma.turma_label}}
     </a>
     </li>
   {% else %}
   <li class="nav-item">
-    <a class="nav-link" id="{{enrollment.id}}-tab" data-toggle="tab" href="#{{enrollment.id}}" role="tab" aria-controls="{{enrollment.id}}" aria-selected="false">{{turma.turma_label}}
+    <a class="nav-link" id="enrollment-{{enrollment.id}}-tab" data-toggle="tab" href="#enrollment-{{enrollment.id}}" role="tab" aria-controls="enrollment-{{enrollment.id}}" aria-selected="false">{{turma.turma_label}}
     </a>
   </li>
   {% endif %}
@@ -228,9 +226,9 @@
 <div class="tab-content" id="myTabContent">
   {% for enrollment, user, turma in enrollment %}
   {% if loop.index <=1 %}
-     <div class="tab-pane fade show active" id="{{enrollment.id}}" role="tabpanel" aria-labelledby="{{enrollment.id}}-tab">
+     <div class="tab-pane fade show active" id="enrollment-{{enrollment.id}}" role="tabpanel" aria-labelledby="enrollment-{{enrollment.id}}-tab">
   {% else %}
-  <div class="tab-pane fade" id="{{enrollment.id}}" role="tabpanel" aria-labelledby="{{enrollment.id}}-tab">
+  <div class="tab-pane fade" id="enrollment-{{enrollment.id}}" role="tabpanel" aria-labelledby="enrollment-{{enrollment.id}}-tab">
     {% endif %}
     <br>
     <div class="row">
