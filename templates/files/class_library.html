@@ -10,15 +10,44 @@
   <br>
   <div class="container">
     <div class="row">
-      <br/>
-      <div class="col-md-3">
+      <br />
+      <div class="col-12">
+        <button type="button" class="btn btn-lg btn-outline-secondary float-right" data-toggle="modal"
+          data-target="#helpModal">
+          <i class="fa fa-info"></i>
+        </button>
         <h1><i class="fa fa-book-open"></i> Library
         </h1>
       </div>
+      </div>
+      </div>
+      <hr>
+  {% if admin %}
+
+  <!-- Help modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h1 class="display-5"><i class="fa fa-book-open"></i> Library</h1>
+          <p class="lead">Distribute files easily between classes.</p>
+          <hr class="my-4">
+          <p>You can easily distribute files between classes using the library.</p>
+          <p>If a file is uploaded to multiple classes, editing the title and description of that file will propagate to all classes.</p>
+          <p>You can view file downloads by clicking the contextual menu of each "card".</p>
+          <blockquote class="blockquote">
+            <p class="mb-0">“What a school thinks about its library is a measure of what it feels about education.”</p>
+            <footer class="blockquote-footer"><cite title="Source Title">Harold Howe</cite></footer>
+          </blockquote>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
-  <hr>
-  {% if admin %}
+
+
   <div class="row text-center">
     <div class="col">
       <div class="counter">
@@ -208,7 +237,34 @@
 {% endfor %}
 </div>
 </div>
+
+s
+
+<!-- Student (non-admin) view-->
 {% else %}
+
+  <!-- Help modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h1 class="display-5"><i class="fa fa-book-open"></i> Library</h1>
+          <p class="lead">The source of all knowledge.</p>
+          <hr class="my-4">
+          <p>Helpful files will constantly be added to library during your time here.</p>
+          <p>Make sure to check back often.</p>
+          <blockquote class="blockquote">
+            <p class="mb-0">“What a school thinks about its library is a measure of what it feels about education.”</p>
+            <footer class="blockquote-footer"><cite title="Source Title">Harold Howe</cite></footer>
+          </blockquote>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <div class="container">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     {% for enrollment, user, turma in enrollment %}
