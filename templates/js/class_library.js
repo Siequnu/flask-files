@@ -1,6 +1,10 @@
 $(function() {
 	// Define global variable which is updated and accessed by handler function
 	var libraryUploadId = 0;
+	
+	// Get the csrf token
+	const csrftoken = Cookies.get('_csrf_token');
+
 	// Handlers
 	var showEditFormHandler = function(e) {
 		// Get the library upload ID of the clicked item
@@ -38,7 +42,7 @@ $(function() {
 			type: "PUT",
 			url: "/api/v1/library/" + libraryUploadId,
 			contentType: 'application/json',
-			headers: {'key': config.apiKey},
+			headers: {'key': config.apiKey, 'X-CSRFToken': csrftoken},
 			data: JSON.stringify({
 				title: $('#formTitleField').val(),
 				description: $('#formDescriptionField').val()

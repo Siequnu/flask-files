@@ -1,9 +1,9 @@
 {% extends "header.html" %} {% block app_content %}
 
 <!-- JS config -->
-<script src="/static/js/config_{{config.APP_NAME}}.js"></script>
+<script type="text/javascript" nonce="{{ csp_nonce() }}" src="/static/js/config_{{config.APP_NAME}}.js"></script>
 
-<script src="{{url_for ('files.js')}}"></script>
+<script type="text/javascript" nonce="{{ csp_nonce() }}" src="{{url_for ('files.js')}}"></script>
 
 
 <div class="container">
@@ -126,7 +126,8 @@
           <div class="card bg-light mb-3" style="max-width: 30rem;">
            <div class="card-body">
              <form id="editLibraryUploadForm" method="POST">
-             <label for="title">Title:</label><br>
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+              <label for="title">Title:</label><br>
              <input id="formTitleField" name="title" type="text" required placeholder="Enter the title here..."><br>
            <label for="title">Description:</label><br>
            <input id="formDescriptionField" name="description" type="text" required placeholder="Enter the description here..."><br>
@@ -237,8 +238,6 @@
 {% endfor %}
 </div>
 </div>
-
-s
 
 <!-- Student (non-admin) view-->
 {% else %}

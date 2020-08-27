@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, current_app, send_file, abort, session
+from flask import render_template, flash, redirect, url_for, request, current_app, send_file, abort, session, make_response
 from flask_login import current_user
 from flask_login import login_required
 
@@ -13,7 +13,9 @@ import random, os, re
 @bp.route("/js")
 @login_required
 def js():
-    return render_template('js/class_library.js')
+	response = make_response(render_template('js/class_library.js'))
+	response.headers['Content-type'] = 'text/javascript'
+	return response
 
 # Access file stats
 @bp.route("/uploads")
@@ -314,8 +316,8 @@ def view_library_downloads(library_upload_id):
 	abort (403)
 
 # Admin form to upload a library file
-@bp.route('/library/upload/', methods=['GET', 'POST'])
 @login_required
+@bp.route('/library/upload/', methods=['GET', 'POST'])
 def upload_library_file():
 	if app.models.is_admin(current_user.username):	
 		form = forms.LibraryUploadForm()
