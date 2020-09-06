@@ -273,7 +273,7 @@ def view_comments(file_id):
 @login_required
 def class_library():
 	if current_user.is_authenticated and app.models.is_admin(current_user.username):
-		classes = app.assignments.models.get_all_class_info()
+		classes = app.classes.models.get_teacher_classes_from_teacher_id (current_user.id)
 		library = app.files.models.get_all_library_books ()
 		total_library_downloads = app.files.models.get_total_library_downloads_count ()
 		student_count = app.user.models.get_total_user_count()
