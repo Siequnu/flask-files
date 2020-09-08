@@ -321,7 +321,8 @@ def view_library_downloads(library_upload_id):
 def upload_library_file():
 	if app.models.is_admin(current_user.username):	
 		form = forms.LibraryUploadForm()
-		form.target_turmas.choices = [(turma.id, turma.turma_label) for turma in Turma.query.all()]
+		classes = app.classes.models.get_teacher_classes_from_teacher_id (current_user.id)
+		form.target_turmas.choices = [(turma.id, turma.turma_label) for turma in classes]
 		if form.validate_on_submit():
 			file = form.library_upload_file.data
 			description = form.description.data
