@@ -1,8 +1,10 @@
 {% extends "header.html" %} {% block app_content %}
 
+<!-- Animation library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 <!-- JS config -->
 <script type="text/javascript"   src="/static/js/config_{{config.APP_NAME}}.js"></script>
-
 <script type="text/javascript"   src="{{url_for ('files.js')}}"></script>
 
 
@@ -49,7 +51,7 @@
 
 
   <div class="row text-center">
-    <div class="col">
+    <div class="col-6 col-lg-6 mb-3">
       <div class="counter">
         <i class="fa fa-archive fa-2x">
         </i>
@@ -59,33 +61,13 @@
         </p>
       </div>
     </div>
-    <div class="col">
+    <div class="col-6 col-lg-6 mb-3">
       <div class="counter">
         <i class="fa fa-file-download fa-2x">
         </i>
-        <h2 class="timer count-title count-number">{{total_library_downloads}}
+        <h2 class="timer count-title count-number libraryDownloads">{{total_library_downloads}}
         </h2>
         <p class="count-text ">Downloads
-        </p>
-      </div>
-    </div>
-    <div class="col">
-      <div class="counter">
-        <i class="fa fa-university fa-2x">
-        </i>
-        <h2 class="timer count-title count-number">{{classes|length}}
-        </h2>
-        <p class="count-text ">Classes
-        </p>
-      </div>
-    </div>
-    <div class="col">
-      <div class="counter">
-        <i class="fa fa-user-graduate fa-2x">
-        </i>
-        <h2 class="timer count-title count-number">{{student_count}}
-        </h2>
-        <p class="count-text ">Students
         </p>
       </div>
     </div>
