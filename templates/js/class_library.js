@@ -1,4 +1,17 @@
 $(function() {
+	
+	// On clicking a class tab, store the tab in memory
+	$('#myTab a').on('click', function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+		var clickedTabId = $(e.target).prop ('id');
+		localStorage.setItem('libraryTab', clickedTabId);
+	  })
+	
+	// On load, search storage to find if we have stored a tab
+	var savedLibraryTab = localStorage.getItem('libraryTab');
+	$('#' + savedLibraryTab).tab('show');
+	
 	// Define global variable which is updated and accessed by handler function
 	var libraryUploadId = 0;
 	
@@ -16,7 +29,7 @@ $(function() {
 			url: "/api/v1/library/" + libraryUploadId,
 			headers: {'key': config.apiKey},
 			error: function(jqXHR, textStatus, errorThrown) {
-				alert('An error occured.');
+				alert('An error occured with the library API GET call.');
 			},
 			success: function(libraryUpload) {
 				// Add the data to the edit form div
@@ -48,7 +61,7 @@ $(function() {
 				description: $('#formDescriptionField').val()
 			}),
 			error: function(jqXHR, textStatus, errorThrown) {
-				alert('An error occured.');
+				alert('An error occured with the library API PUT call.');
 			},
 			success: function(libraryUpload) {
 				// Hide the modal div
