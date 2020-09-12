@@ -12,51 +12,6 @@ $(function() {
 	var savedLibraryTab = localStorage.getItem('libraryTab');
 	$('#' + savedLibraryTab).tab('show');
 
-	
-	// Checker for library stats, updates once a second
-	var libraryStats = function () {
-		// On load, get the latest download number
-		var fetchLibraryStats = function () {
-			fetch('/api/library/stats').then(res => res.json()).then(data => {
-				setLibraryStats(data.download_count);
-			});
-		};
-
-		// Function to set library stats
-		var setLibraryStats = function (downloadCount) {
-			const libraryDownloadsElement = '.libraryDownloads';
-			if (!($(libraryDownloadsElement).text () == downloadCount)) {
-				$(libraryDownloadsElement).text (downloadCount);
-				animateCSS (libraryDownloadsElement, 'heartBeat');
-			}
-		};
-
-		// Fetch the latest file stats every second
-		window.setInterval(function(){
-			fetchLibraryStats ();
-		}, 1000);
-		
-		const animateCSS = (element, animation, prefix = 'animate__') =>
-			// We create a Promise and return it
-			new Promise((resolve, reject) => {
-				const animationName = `${prefix}${animation}`;
-				const node = document.querySelector(element);
-
-				node.classList.add(`${prefix}animated`, animationName);
-
-				// When the animation ends, we clean the classes and resolve the Promise
-				function handleAnimationEnd() {
-					node.classList.remove(`${prefix}animated`, animationName);
-					node.removeEventListener('animationend', handleAnimationEnd);
-
-					resolve('Animation ended');
-				}
-
-				node.addEventListener('animationend', handleAnimationEnd);
-			});
-	};
-	libraryStats();
-
 	// Define global variable which is updated and accessed by handler function
 	var libraryUploadId = 0;
 	
