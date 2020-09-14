@@ -130,7 +130,6 @@
     </button>
   </a>
   <br>
-
   <br>
   <link rel="stylesheet" href="/static/css/form-control-borderless.css">
   <div class="row justify-content-left">
@@ -151,7 +150,6 @@
       </form>
     </div>
     <!--end of col-->
-  </div>
 
 
 
@@ -212,7 +210,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <h1 class="display-5"><i class="fa fa-book-open"></i> Upload library file</h1>
+          <h1 class="display-5"><i class="fa fa-cloud-upload-alt"></i> Upload library file</h1>
           <hr class="my-4">
           <form method="post" action="{{url_for('files.upload_library_file')}}" enctype="multipart/form-data">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
