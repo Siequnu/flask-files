@@ -277,9 +277,16 @@ def class_library():
 		library = app.files.models.get_all_library_books ()
 		total_library_downloads = app.files.models.get_total_library_downloads_count ()
 		student_count = app.user.models.get_total_user_count()
-		return render_template('files/class_library.html', admin = True, classes = classes, library = library,
-							   total_library_downloads = total_library_downloads,
-							   student_count = student_count)
+		form = forms.LibraryUploadForm()
+		form.target_turmas.choices = [(turma.id, turma.turma_label) for turma in classes]
+		return render_template(
+			'files/class_library.html', 
+			admin = True, 
+			classes = classes, 
+			library = library,
+			total_library_downloads = total_library_downloads,
+			student_count = student_count,
+			form = form)
 	else:
 		library = app.files.models.get_user_library_books_from_id (current_user.id)
 		enrollment = app.assignments.models.get_user_enrollment_from_id(current_user.id)

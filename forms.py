@@ -9,8 +9,8 @@ class LibraryUploadForm(FlaskForm):
 	library_upload_file = FileField(label='File:')
 	title = StringField('Library upload title:', validators=[DataRequired()])
 	description = StringField('Description:', validators=[DataRequired()])
-	target_turmas = SelectMultipleField('For classes', coerce=int, validators=[DataRequired()])
-	submit = SubmitField('Upload new file')
+	target_turmas = SelectMultipleField('For classes:', coerce=int, validators=[DataRequired()])
+	library_upload_form_submit = SubmitField('Upload new file')
 	
 	
 class EditLibraryUploadForm(FlaskForm):

@@ -11,7 +11,7 @@
     <h1>Upload library file</h1>
     <br>
     
-    <br><a href="{{url_for('files.class_library')}}" <button class="btn btn-primary"><i class="fa fa-chevron-left"></i> Back</button></a>
+    <br><a href="{{url_for('files.class_library')}}"><button class="btn btn-primary"><i class="fa fa-chevron-left"></i> Back</button></a>
     <hr>
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
@@ -19,7 +19,7 @@
       {{ render_field(form.title) }}
       {{ render_field(form.description) }}
       {{ render_field(form.target_turmas) }}
-      {{ render_field(form.submit) }}
+      {{ render_field(form.library_upload_form_submit) }}
   </form>
    
    </div>

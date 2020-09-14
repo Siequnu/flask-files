@@ -1,4 +1,7 @@
-{% extends "header.html" %} {% block app_content %}
+{% extends "header.html" %}
+{% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/form.html' import render_field %}
+{% block app_content %}
 
 <!-- Animation library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -26,7 +29,7 @@
   <hr>
   {% if admin %}
 
-  <!-- Stats widget-->
+  <!-- Stats widget upload script -->
   <script type="text/javascript">
     $(function () {
       // Checker for library stats, updates once a second
@@ -99,7 +102,6 @@
     </div>
   </div>
 
-
   <div class="row text-center">
     <div class="col-6 col-lg-6 mb-3">
       <div class="counter">
@@ -123,9 +125,10 @@
     </div>
   </div>
   <br>
-  <a href="{{url_for('files.upload_library_file')}}" <button class="btn btn-lg btn-outline-success">
-    <i class="fa fa-file-upload">
-    </i> Upload new library file
+  <a href="{{url_for('files.upload_library_file')}}" class="libraryFileUploadModal"><button
+      class="btn btn-lg btn-outline-success" data-toggle="modal" data-target="#libraryFileUploadModal">
+      <i class="fa fa-file-upload">
+      </i> Upload new library file
     </button>
   </a>
   <br>
@@ -181,6 +184,38 @@
   </div>
 
 
+  <!-- Upload library file modal -->
+  <div class="modal fade" id="libraryFileUploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h1 class="display-5"><i class="fa fa-book-open"></i> Upload library file</h1>
+          <hr class="my-4">
+          <form method="post" action="{{url_for('files.upload_library_file')}}" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            {{ render_field(form.library_upload_file) }}
+            {{ render_field(form.title) }}
+            {{ render_field(form.description) }}
+            {{ render_field(form.target_turmas) }}
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          {{ render_field(form.library_upload_form_submit, button_style="success") }}
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New library upload button script-->
+  <script>
+    $('.libraryFileUploadModal').on('click', function (event) {
+      event.preventDefault();
+    });
+  </script>
+
+
   </br>
   <div class="container">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -228,11 +263,10 @@
                   <div class="row">
                     <div class="col-xs-12 col-lg-6">
 
-                      <a href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}"
-                        <button class="btn btn-sm btn-block btn-outline-info">
+                      <a class="btn btn-sm btn-outline-info"
+                        href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}">
                         <i class="fa fa-fw fa-download">
                         </i> Download
-                        </button>
                       </a>
 
                     </div>
