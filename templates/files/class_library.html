@@ -124,7 +124,6 @@
       </div>
     </div>
   </div>
-  <br>
   <a href="{{url_for('files.upload_library_file')}}" class="libraryFileUploadModal"><button
       class="btn btn-lg btn-outline-success" data-toggle="modal" data-target="#libraryFileUploadModal">
       <i class="fa fa-file-upload">
@@ -132,6 +131,31 @@
     </button>
   </a>
   <br>
+
+  <br>
+  <link rel="stylesheet" href="/static/css/form-control-borderless.css">
+  <div class="row justify-content-left">
+    <div class="col-12 col-md-10 col-lg-8">
+      <form class="card">
+        <div class="card-body row no-gutters align-items-center">
+          <div class="col-auto">
+            <i class="fas fa-search h4 text-body">
+            </i>
+          </div>
+          <!--end of col-->
+          <div class="col">
+            <input id="myInput" class="form-control form-control-lg form-control-borderless" type="search"
+              placeholder="Search for books or documents">
+          </div>
+          <!--end of col-->
+        </div>
+      </form>
+    </div>
+    <!--end of col-->
+  </div>
+
+
+
 
   <!-- Edit Library Card Modal -->
   <div class="modal fade" id="editFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -217,7 +241,6 @@
 
 
   </br>
-  <div class="container">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       {% for class in classes %}
       {% if loop.index ==1 %}
@@ -311,7 +334,6 @@
           </div>
         </div>
         {% endfor %}
-      </div>
     </div>
 
     <!-- Student (non-admin) view-->
@@ -340,7 +362,29 @@
       </div>
     </div>
 
-    <div class="container">
+
+    <br>
+    <link rel="stylesheet" href="/static/css/form-control-borderless.css">
+    <div class="row justify-content-left">
+      <div class="col-12 col-md-10 col-lg-8">
+        <form class="card">
+          <div class="card-body row no-gutters align-items-center">
+            <div class="col-auto">
+              <i class="fas fa-search h4 text-body">
+              </i>
+            </div>
+            <!--end of col-->
+            <div class="col">
+              <input id="myInput" class="form-control form-control-lg form-control-borderless" type="search"
+                placeholder="Search for books or documents">
+            </div>
+            <!--end of col-->
+          </div>
+        </form>
+      </div>
+      <!--end of col-->
+    </div>
+
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         {% for enrollment, user, turma in enrollment %}
         {% if loop.index
@@ -402,5 +446,4 @@
           </div>
           {% endfor %}
         </div>
-      </div>
       {% endif %} {% endblock %}

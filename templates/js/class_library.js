@@ -85,4 +85,17 @@ $(function() {
 	$('#editLibraryUploadForm').submit(submitEditFormHandler);
 	$('#modalSaveButton').click(submitEditFormHandler);
 
+
+	// Handler for search box
+	$("#myInput").on("keyup", function () {
+		if (!$('#myInput').val()) {
+			$('.library_card').show(); // Show all inputs
+		} else {
+			// If there are values, filter them out
+			var value = $(this).val().toLowerCase();
+			$(".library_card").filter(function () {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+		}
+	});
 });
