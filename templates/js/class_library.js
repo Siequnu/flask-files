@@ -80,14 +80,14 @@ $(function() {
 		e.preventDefault();
 	};
 
-	// Events
+	// Library edit modal events
 	$('.editLibraryUpload').click(showEditFormHandler);
 	$('#editLibraryUploadForm').submit(submitEditFormHandler);
 	$('#modalSaveButton').click(submitEditFormHandler);
 
 
-	// Handler for search box
-	$("#myInput").on("keyup", function () {
+	// Search box handler
+	$("#myInput").on("input", function () {
 		if (!$('#myInput').val()) {
 			$('.library_card').show(); // Show all inputs
 		} else {
