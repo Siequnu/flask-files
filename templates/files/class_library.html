@@ -234,101 +234,102 @@
       });
     </script>
 
-
-    </br>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      {% for class in classes %}
-      {% if loop.index ==1 %}
-      <li class="nav-item">
-        <a class="nav-link active" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab"
-          aria-controls="class-{{class.id}}" aria-selected="true">{{class.turma_label}}
-        </a>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab"
-          aria-controls="class-{{class.id}}" aria-selected="false">{{class.turma_label}}
-        </a>
-      </li>
-      {% endif %}
-      {% endfor %}
-    </ul>
-    <div class="tab-content" id="myTabContent">
-      {% for class in classes %}
-      {% if loop.index ==1 %}
-      <div class="tab-pane fade show active" id="class-{{class.id}}" role="tabpanel"
-        aria-labelledby=class-{{class.id}}-tab">
+    <div class="container">
+      </br>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        {% for class in classes %}
+        {% if loop.index ==1 %}
+        <li class="nav-item">
+          <a class="nav-link active" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab"
+            aria-controls="class-{{class.id}}" aria-selected="true">{{class.turma_label}}
+          </a>
+        </li>
         {% else %}
-        <div class="tab-pane fade" id="class-{{class.id}}" role="tabpanel" aria-labelledby="class-{{class.id}}-tab">
-          {% endif %}
-          <br>
-          <div class="row">
-            {% for class_library_file, library_upload in library %}
-            {% if class_library_file.turma_id == class.id %}
-            {% set thumbnail_filename = library_upload.filename.split('.') %}
-            <div class="col-xs-12 col-sm-4">
-              <div class="library_card" id="{{library_upload.id}}">
-                <div class="img-library_card">
-                  <img src="/static/thumbnails/{{thumbnail_filename[0]}}.jpeg" />
-                </div>
-                <div class="library_card-content" id="libraryCardContent">
-                  <h4 class="library_card-title" id="libraryCardTitle">
-                    {{library_upload.title}}
-                  </h4>
-                  <p id="library_card-description">{{library_upload.description}}</p>
-                </div>
-                <div class="library_card-read-more">
-                  <div class="row">
-                    <div class="col-xs-12 col-lg-6">
+        <li class="nav-item">
+          <a class="nav-link" id="class-{{class.id}}-tab" data-toggle="tab" href="#class-{{class.id}}" role="tab"
+            aria-controls="class-{{class.id}}" aria-selected="false">{{class.turma_label}}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        {% for class in classes %}
+        {% if loop.index ==1 %}
+        <div class="tab-pane fade show active" id="class-{{class.id}}" role="tabpanel"
+          aria-labelledby=class-{{class.id}}-tab">
+          {% else %}
+          <div class="tab-pane fade" id="class-{{class.id}}" role="tabpanel" aria-labelledby="class-{{class.id}}-tab">
+            {% endif %}
+            <br>
+            <div class="row">
+              {% for class_library_file, library_upload in library %}
+              {% if class_library_file.turma_id == class.id %}
+              {% set thumbnail_filename = library_upload.filename.split('.') %}
+              <div class="col-xs-12 col-sm-4">
+                <div class="library_card" id="{{library_upload.id}}">
+                  <div class="img-library_card">
+                    <img src="/static/thumbnails/{{thumbnail_filename[0]}}.jpeg" />
+                  </div>
+                  <div class="library_card-content" id="libraryCardContent">
+                    <h4 class="library_card-title" id="libraryCardTitle">
+                      {{library_upload.title}}
+                    </h4>
+                    <p id="library_card-description">{{library_upload.description}}</p>
+                  </div>
+                  <div class="library_card-read-more">
+                    <div class="row">
+                      <div class="col-xs-12 col-lg-6">
 
-                      <a class="btn btn-sm btn-outline-info"
-                        href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}">
-                        <i class="fa fa-fw fa-download">
-                        </i> Download
-                      </a>
+                        <a class="btn btn-sm btn-outline-info"
+                          href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}">
+                          <i class="fa fa-fw fa-download">
+                          </i> Download
+                        </a>
 
-                    </div>
-                    <div class="col-xs-12 col-lg-6">
-
-                      <button class="btn btn-outline-dark float-right dropdown-toggle" type="button"
-                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h">
-                        </i>
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item"
-                          href="{{url_for('files.view_library_downloads', library_upload_id = library_upload.id)}}">
-                          <i class="fa fa-glasses">
-                          </i> View downloads
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item editLibraryUpload" data-toggle="modal" data-target="#editFormModal"
-                          href="{{url_for('files.edit_library_file', library_upload_id = library_upload.id)}}">
-                          <i class="fa fa-fw fa-edit">
-                          </i> Edit
-                        </a>
-                        <a class="dropdown-item"
-                          href="{{url_for('files.delete_library_file', library_upload_id = library_upload.id, turma_id = class_library_file.turma_id)}}">
-                          <i class="fa fa-fw fa-folder-minus">
-                          </i> Delete for this class
-                        </a>
-                        <a class="dropdown-item"
-                          href="{{url_for('files.delete_library_file', library_upload_id = library_upload.id)}}">
-                          <i class="fa fa-fw fa-trash-alt">
-                          </i> Delete for all
-                        </a>
                       </div>
+                      <div class="col-xs-12 col-lg-6">
 
+                        <button class="btn btn-outline-dark float-right dropdown-toggle" type="button"
+                          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-ellipsis-h">
+                          </i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item"
+                            href="{{url_for('files.view_library_downloads', library_upload_id = library_upload.id)}}">
+                            <i class="fa fa-glasses">
+                            </i> View downloads
+                          </a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item editLibraryUpload" data-toggle="modal" data-target="#editFormModal"
+                            href="{{url_for('files.edit_library_file', library_upload_id = library_upload.id)}}">
+                            <i class="fa fa-fw fa-edit">
+                            </i> Edit
+                          </a>
+                          <a class="dropdown-item"
+                            href="{{url_for('files.delete_library_file', library_upload_id = library_upload.id, turma_id = class_library_file.turma_id)}}">
+                            <i class="fa fa-fw fa-folder-minus">
+                            </i> Delete for this class
+                          </a>
+                          <a class="dropdown-item"
+                            href="{{url_for('files.delete_library_file', library_upload_id = library_upload.id)}}">
+                            <i class="fa fa-fw fa-trash-alt">
+                            </i> Delete for all
+                          </a>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              {% endif %}
+              {% endfor %}
             </div>
-            {% endif %}
-            {% endfor %}
           </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>
@@ -429,8 +430,8 @@
               <div class="library_card-read-more">
                 <a href="{{url_for('files.download_library_file', library_upload_id = library_library_upload.id)}}">
                   <button class="btn btn-sm btn-outline-info">
-                  <i class="fa fa-download">
-                  </i> Download
+                    <i class="fa fa-download">
+                    </i> Download
                   </button>
                 </a>
               </div>
