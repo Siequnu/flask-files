@@ -171,6 +171,11 @@ def download (file_id):
 @bp.route('/upload/<assignment_id>/<user_id>',methods=['GET', 'POST'])
 @login_required
 def upload_file(assignment_id, user_id = False):
+	# If we are in "view as student mode", quit, as we don't want teachers posing as students messing up the assignment distribution algo
+	if current_user.can_return_to_admin is True:
+		flash ('You are currently in student view, and can not upload student assignments.', 'info')
+		return (redirect (url_for ('main.index')))
+	
 	# Only admin can force submit for another student
 	if user_id:
 		if not current_user.is_authenticated and app.models.is_admin(current_user.username):
