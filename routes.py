@@ -304,7 +304,18 @@ def class_library():
 @login_required
 def download_library_file(library_upload_id):
 	# Check if the user is part of this file's class
-	if app.models.is_admin(current_user.username) or db.session.query(ClassLibraryFile).join(
+	if app.models.is_admin(current_user.username):
+		library_upload = LibraryUpload.query.get(library_upload_id)
+		if library_upload_id is None: abort (404)
+
+		# Check if this file belongs to the current teacher vieweing
+		if app.files.models.check_if_library_file_belongs_to_teacher (library_upload.id, current_user.id) is False:
+			abort (403)
+		
+		# All checks passed, download file
+		return app.files.models.download_library_file (library_upload_id)
+		
+	elif db.session.query(ClassLibraryFile).join(
 		Enrollment, ClassLibraryFile.turma_id == Enrollment.turma_id).filter(
 		Enrollment.user_id == current_user.id).filter(
 		ClassLibraryFile.library_upload_id == library_upload_id).first() is not None:
@@ -318,6 +329,11 @@ def download_library_file(library_upload_id):
 def view_library_downloads(library_upload_id):
 	if current_user.is_authenticated and app.models.is_admin(current_user.username):
 		library_upload = LibraryUpload.query.get(library_upload_id)
+
+		# Check if this file belongs to the current teacher vieweing
+		if app.files.models.check_if_library_file_belongs_to_teacher (library_upload.id, current_user.id) is False:
+			abort (403)
+
 		library_downloads = db.session.query(LibraryDownload, User).join(
 			User, LibraryDownload.user_id == User.id).filter(
 			LibraryDownload.library_upload_id==library_upload_id).all()
@@ -354,6 +370,14 @@ def upload_library_file():
 @login_required
 def delete_library_file(library_upload_id, turma_id = False):
 	if app.models.is_admin(current_user.username):	
+		
+		library_upload = LibraryUpload.query.get(library_upload_id)
+		if library_upload_id is None: abort (404)
+
+		# Check if this file belongs to the current teacher vieweing
+		if app.files.models.check_if_library_file_belongs_to_teacher (library_upload.id, current_user.id) is False:
+			abort (403)
+
 		app.files.models.delete_library_upload_from_id(library_upload_id, turma_id)
 		flash('File deleted from the library!', 'success')
 		return redirect(url_for('files.class_library'))
@@ -367,6 +391,13 @@ def delete_library_file(library_upload_id, turma_id = False):
 def edit_library_file(library_upload_id):
 	if app.models.is_admin(current_user.username):
 		library_upload = LibraryUpload.query.get(library_upload_id)
+		if library_upload_id is None: abort (404)
+
+		# Check if this file belongs to the current teacher vieweing
+		if app.files.models.check_if_library_file_belongs_to_teacher (library_upload.id, current_user.id) is False:
+			abort (403)
+
+
 		form = forms.EditLibraryUploadForm(obj=library_upload)
 		if form.validate_on_submit():
 			app.files.models.edit_library_upload(library_upload_id, form)

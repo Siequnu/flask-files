@@ -15,6 +15,23 @@ from datetime import datetime
 
 from app import executor
 
+def check_if_library_file_belongs_to_teacher (library_upload_id, teacher_id):
+	library_upload = LibraryUpload.query.get(library_upload_id)
+	if library_upload is None: return False
+
+	# Get list of classes this file is assigned to
+	turmas = []
+	for class_file_assignment in ClassLibraryFile.query.filter_by (library_upload_id = library_upload.id).all():
+		turmas.append (str(class_file_assignment.turma_id))
+
+	# Check if any of these turmas belong to the teacher in question
+	for turma_id in turmas:
+		if app.classes.models.check_if_turma_id_belongs_to_a_teacher (turma_id, teacher_id) is True:
+			return True
+	
+	# No matching turmas found, return False
+	return False
+
 def new_library_files_since_last_seen ():
 	try:
 		last_book_upload_timestamp = db.session.query(Enrollment, User, ClassLibraryFile, LibraryUpload).join(
