@@ -13,7 +13,7 @@
       </a>
   </div>
   <div class="col-md-10">
-    <h1>Replace uploaded file
+    <h1><i class="fa fa-retweet"></i>Replace uploaded file
     </h1>
   </div>
 </div>
@@ -63,7 +63,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-md-4">
-      <h2>Current upload
+      <h2>Current file
       </h2>
       <br>
       <div class="library_card">
@@ -72,7 +72,7 @@
           <img src="/static/thumbnails/{{thumbnail_filename[0]}}.jpeg" />
         </div>
         <div class="library_card-content">
-          <p>{{current_upload.original_filename|truncate(42)}}
+          <p>{{current_upload.original_filename|truncate(20)}}
           </p>
         </div>
         <div class="library_card-read-more">
