@@ -28,6 +28,18 @@ def file_stats():
 		template_packages['total_upload_count'] = str(models.get_all_uploads_count())
 		template_packages['total_assignments'] = Assignment.query.all(),
 		template_packages['admin'] = True
+
+		if current_user.is_superintendant is not True:
+			filtered_list = []
+			# Filter the list of files
+			for upload, user, assignment in template_packages['uploads_object']:
+				if app.classes.models.check_if_student_is_in_teachers_class (user.id, current_user.id):
+					filtered_list.append ((upload, user, assignment))
+
+			# Overwrite the original
+			template_packages['uploads_object'] = filtered_list
+
+
 		return render_template('files/file_stats_admin.html', template_packages = template_packages)
 	elif current_user.is_authenticated:
 		all_post_info = models.get_post_info_from_user_id (current_user.id)

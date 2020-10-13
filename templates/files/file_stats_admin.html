@@ -2,14 +2,12 @@
 
 {% block app_content %}
 <div class="container">
-  <br>
   <div class="row">
     <div class="col-md-8">
       <h1><i class="fa fa-file-upload"></i> Manage student uploads</h1>
-      <hr>
     </div>
   </div>
-
+  <hr>
   <br />
 
   <div class="container">
@@ -33,11 +31,29 @@
     </div>
 
     <br>
-    <hr>
+  
 
-    <input id="myInput" type="text" placeholder="Search..">
-    <br>
-    <br>
+    <link rel="stylesheet" href="/static/css/form-control-borderless.css">
+    <div class="row justify-content-left">
+      <div class="col-12 col-md-10 col-lg-8 mb-3">
+        <form class="card">
+          <div class="card-body row no-gutters align-items-center">
+            <div class="col-auto">
+              <i class="fas fa-search h4 text-body">
+              </i>
+            </div>
+            <!--end of col-->
+            <div class="col">
+              <input id="myInput" class="form-control form-control-lg form-control-borderless" type="search"
+                placeholder="Search for files">
+            </div>
+            <!--end of col-->
+          </div>
+        </form>
+      </div>
+      <!--end of col-->
+
+
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
