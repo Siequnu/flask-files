@@ -167,7 +167,7 @@ def download_file(assignment_id):
 @bp.route("/download/<file_id>")
 @login_required
 def download (file_id):
-	if current_user.id is models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
+	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
 		file = Upload.query.get(file_id)
 		if file is not None:
 			filename = file.filename
@@ -227,7 +227,7 @@ def upload_file(assignment_id, user_id = False):
 @bp.route('/upload/replace/<upload_id>', methods=['GET', 'POST'])
 @login_required
 def replace_uploaded_file(upload_id):
-	if current_user.id is models.get_file_owner_id (upload_id) or app.models.is_admin(current_user.username):
+	if current_user.id == models.get_file_owner_id (upload_id) or app.models.is_admin(current_user.username):
 		# If this assignment is over the deadline, and user is not admin, abort	
 		try:
 			upload = Upload.query.get(upload_id)
@@ -276,7 +276,7 @@ def replace_uploaded_file(upload_id):
 @bp.route("/comments/<file_id>", methods=['GET', 'POST'])
 @login_required
 def view_comments(file_id):
-	if current_user.id is models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
+	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
 		upload = models.get_upload_object (file_id)
 		comments = models.get_peer_reviews_from_upload_id (file_id)
 		
