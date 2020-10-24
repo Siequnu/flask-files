@@ -123,7 +123,7 @@
     </div>
   </div>
   <a href="{{url_for('files.upload_library_file')}}" class="libraryFileUploadModal"><button
-      class="btn btn-lg btn-outline-success" data-toggle="modal" data-target="#libraryFileUploadModal">
+      class="btn btn-outline-success" data-toggle="modal" data-target="#libraryFileUploadModal">
       <i class="fa fa-file-upload">
       </i> Upload new library file
     </button>
@@ -185,7 +185,6 @@
                       <label for="title">Description:</label><br>
                       <input id="formDescriptionField" name="description" type="text" required
                         placeholder="Enter the description here..."><br>
-
                     </form>
                   </div>
                 </div>
@@ -277,17 +276,12 @@
                     <p id="library_card-description">{{library_upload.description}}</p>
                   </div>
                   <div class="library_card-read-more">
-                    <div class="row">
-                      <div class="col-xs-12 col-lg-6">
-
+                    
                         <a class="btn btn-sm btn-outline-info"
                           href="{{url_for('files.download_library_file', library_upload_id = library_upload.id)}}">
                           <i class="fa fa-fw fa-download">
                           </i> Download
                         </a>
-
-                      </div>
-                      <div class="col-xs-12 col-lg-6">
 
                         <button class="btn btn-outline-dark float-right dropdown-toggle" type="button"
                           id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -306,6 +300,7 @@
                             <i class="fa fa-fw fa-edit">
                             </i> Edit
                           </a>
+                          <div class="dropdown-divider"></div>
                           <a class="dropdown-item"
                             href="{{url_for('files.delete_library_file', library_upload_id = library_upload.id, turma_id = class_library_file.turma_id)}}">
                             <i class="fa fa-fw fa-folder-minus">
@@ -317,9 +312,6 @@
                             </i> Delete for all
                           </a>
                         </div>
-
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

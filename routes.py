@@ -140,17 +140,27 @@ def download_random_file(assignment_id):
 @login_required
 def delete_file(upload_id):
 	if current_user.is_authenticated and app.models.is_admin(current_user.username):
-		try:
-			file = Upload.query.get(upload_id)
-		except:
-			return redirect(url_for('files.file_stats'))
+		
+		file = Upload.query.get(upload_id)
+		if file is None:
+			abort (403)
+		
+		# Is the student who uploaded this file part of this teacher's class?
+		if current_user.is_superintendant is not True:
+			if app.classes.models.check_if_student_is_in_teachers_class (file.user_id, current_user.id) is not True:
+				abort (403)
+
 		form = app.user.forms.ConfirmationForm()
 		if form.validate_on_submit():
-			app.files.models.delete_upload(upload_id)
 			# Delete any comments for this upload ID
 			app.assignments.models.delete_all_comments_from_upload_id(upload_id)
+			
+			# Delete the upload
+			app.files.models.delete_upload(upload_id)
+			
 			flash ('The file, and any associated comments or comment uploads were successfully deleted.', 'success')
 			return redirect(url_for('files.file_stats'))
+		
 		return render_template('confirmation_form.html',
 							   title = 'Delete file?',
 							   confirmation_message = 'Are you sure you want to delete ' + file.original_filename + '?',

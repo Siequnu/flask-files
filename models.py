@@ -1,3 +1,4 @@
+
 from flask import send_from_directory, current_app
 from flask_login import current_user
 
@@ -76,8 +77,12 @@ def edit_library_upload (library_upload_id, form):
 	
 # Delete upload and any comments
 def delete_upload (upload_id):
-	#!# Delete any comments and any uploaded comments associated with this file
-	Upload.query.filter_by(id = upload_id).delete()								
+	# Delete any grades from this file
+	for grade in app.assignments.models.AssignmentGrade.query.filter_by(upload_id = upload_id):
+		db.session.delete(grade)
+	
+	upload = Upload.query.get(upload_id)
+	db.session.delete(upload)
 	db.session.commit()
 
 	
