@@ -196,6 +196,14 @@ def allowed_file_extension(filename):
 def get_file_extension(filename):
 	return filename.rsplit('.', 1)[1].lower()
 	
+
+def get_original_filename_from_file_id (file_id):
+	file = Upload.query.get(file_id)
+	if file is not None:
+		return {'filename': file.original_filename}
+	else:
+		return {'error': 'Could not find this file.'}
+
 def delete_uploads_enrollments_and_download_records_for_user (user_id):
 	# Delete all upload records for this user
 	assignment_uploads = Upload.query.filter_by(user_id=user_id).all()
@@ -220,17 +228,26 @@ def delete_uploads_enrollments_and_download_records_for_user (user_id):
 
 # Send out specific file for download
 def download_file(filename, rename = False):
+	# Log the download
 	download = Download(filename = filename, user_id = current_user.id, timestamp = datetime.now())
 	db.session.add(download)
 	db.session.commit()
 	
+	# Send out the file
 	if rename == False:
-		return send_from_directory(directory = current_app.config['UPLOAD_FOLDER'],
-								   filename = filename, as_attachment = True)
+		return send_from_directory(
+			directory = current_app.config['UPLOAD_FOLDER'],
+			filename = filename, 
+			as_attachment = True
+		)
 	elif rename == True:
 		original_filename = Upload.query.filter_by(filename=filename).first().original_filename
-		return send_from_directory(filename=filename, directory=current_app.config['UPLOAD_FOLDER'],
-								   as_attachment = True, attachment_filename = original_filename)
+		return send_from_directory(
+			filename=filename, 
+			directory=current_app.config['UPLOAD_FOLDER'],					   
+			as_attachment = True, 
+			attachment_filename = original_filename
+		)
 
 def get_total_library_downloads_count ():
 	return len(LibraryDownload.query.all())

@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, current_app, send_file, abort, session, make_response
+from flask import render_template, flash, redirect, url_for, request, current_app, send_file, abort, session, make_response, jsonify
 from flask_login import current_user
 from flask_login import login_required
 
@@ -8,6 +8,14 @@ from app.files import bp, models, forms
 from app.models import Comment, Download, Upload, Turma, ClassLibraryFile, Enrollment, Assignment, LibraryUpload, LibraryDownload, User
 
 import random, os, re
+
+# API route to get a filename from a file
+@bp.route("/api/filename/<file_id>")
+@login_required
+def api_get_original_filename_from_id (file_id):
+	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
+		return jsonify (app.files.models.get_original_filename_from_file_id (file_id))
+	abort(403)
 
 # Render this blueprint's javascript
 @bp.route("/js")
@@ -164,14 +172,16 @@ def download_file(assignment_id):
 
 
 # Download any file from ID
+# Currently the rename argument is not being used by any 
 @bp.route("/download/<file_id>")
+@bp.route("/download/<file_id>/<rename>")
 @login_required
-def download (file_id):
+def download (file_id, rename = True):
 	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
 		file = Upload.query.get(file_id)
 		if file is not None:
 			filename = file.filename
-			return models.download_file(filename, rename=True)
+			return models.download_file(filename, rename)
 		else:
 			abort (404)
 	else:
