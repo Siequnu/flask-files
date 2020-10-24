@@ -172,14 +172,30 @@ def download_file(assignment_id):
 
 
 # Download any file from ID
-# Currently the rename argument is not being used by any 
 @bp.route("/download/<file_id>")
 @bp.route("/download/<file_id>/<rename>")
 @login_required
 def download (file_id, rename = True):
+	# Only file owner and admin can use this (we check for teacher permissions later)
 	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
+		
+		# Get the file
 		file = Upload.query.get(file_id)
+		
 		if file is not None:
+			
+			# If we are admin (only admin and file_owner make it to this part),
+			# check if this upload was made for an assignment that this teacher created
+			if app.models.is_admin(current_user.username):
+				assignment = Assignment.query.get(file.assignment_id)
+				
+				if assignment is None: 
+					abort (404)
+				
+				if app.classes.models.check_if_turma_id_belongs_to_a_teacher (assignment.target_turma_id, current_user.id) is False:
+					abort (403)
+
+			# Get the filename and send to the download model
 			filename = file.filename
 			return models.download_file(filename, rename)
 		else:
