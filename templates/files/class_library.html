@@ -264,7 +264,7 @@
               {% for class_library_file, library_upload in library %}
               {% if class_library_file.turma_id == class.id %}
               {% set thumbnail_filename = library_upload.filename.split('.') %}
-              <div class="col-xs-12 col-sm-4">
+              <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
                 <div class="library_card" id="{{library_upload.id}}">
                   <div class="img-library_card">
                     <img src="/static/thumbnails/{{thumbnail_filename[0]}}.jpeg" />
