@@ -29,7 +29,7 @@
         <hr>
         {% endif %}
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
           <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
           {{ form|safe }}
           <br>
