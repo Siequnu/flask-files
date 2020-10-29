@@ -186,30 +186,35 @@ def download_file(assignment_id):
 @bp.route("/download/<file_id>/<rename>")
 @login_required
 def download (file_id, rename = True):
+	# Get the file
+	file = Upload.query.get(file_id)
+	if file is None:
+		abort (404)
+
+	# Get the assignment
+	assignment = Assignment.query.get(file.assignment_id)	
+	if assignment is None: 
+		abort (404)
+
+	# For students using the open peer review
+	if current_user.is_admin == False and assignment.open_peer_review == True and app.classes.models.check_if_student_is_in_class (current_user.id, assignment.target_turma_id) is True:
+		# Get the filename and send to the download model
+		return models.download_file(file.filename, rename = False) # i.e. get the UUID random filename
+
+	# For normal download functions
 	# Only file owner and admin can use this (we check for teacher permissions later)
 	if current_user.id == models.get_file_owner_id (file_id) or app.models.is_admin(current_user.username):
-		
-		# Get the file
-		file = Upload.query.get(file_id)
-		
-		if file is not None:
 			
-			# If we are admin (only admin and file_owner make it to this part),
-			# check if this upload was made for an assignment that this teacher created
-			if app.models.is_admin(current_user.username):
-				assignment = Assignment.query.get(file.assignment_id)
-				
-				if assignment is None: 
-					abort (404)
-				
-				if app.classes.models.check_if_turma_id_belongs_to_a_teacher (assignment.target_turma_id, current_user.id) is False:
-					abort (403)
+		# If we are admin (only admin and file_owner make it to this part),
+		# check if this upload was made for an assignment that this teacher created
+		if app.models.is_admin(current_user.username):
+			
+			if app.classes.models.check_if_turma_id_belongs_to_a_teacher (assignment.target_turma_id, current_user.id) is False:
+				abort (403)
 
-			# Get the filename and send to the download model
-			filename = file.filename
-			return models.download_file(filename, rename)
-		else:
-			abort (404)
+		# Send to the download model
+		return models.download_file(file.filename, rename)
+
 	else:
 		abort (404)
 
