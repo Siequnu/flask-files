@@ -4,6 +4,13 @@
 {% block app_content %}
 <div class="container">
 
+  <style>
+    div.radio {display: inline-block; padding-right: 15px;}
+    input {margin-right: 5px;}
+    div.form-group>label {margin-right: 10px;}
+    div.form-title>h3 {margin-bottom: 20px;}
+</style>
+
   <div class="col-12 col-lg-2 mb-3">
     {% if display_back_button == True %}
     <a href="{{url_for('assignments.view_assignment_details', assignment_id = assignment_info.id)}}"><button
@@ -17,7 +24,7 @@
 
   <div class="container">
 
-    <div class="card bg-light mb-3" style="max-width: 50rem;">
+    <div class="card bg-light mb-3 p-1">
       <div class="card-body">
         <h1>{{title}}</h1>
         <hr>
