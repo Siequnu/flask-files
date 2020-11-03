@@ -3,12 +3,11 @@
 {% block app_content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
-      <h1><i class="fa fa-file-upload"></i> Manage student uploads</h1>
+    <div class="col">
+      <h1><i class="fa fa-file-upload"></i> Student uploads</h1>
     </div>
   </div>
   <hr>
-  <br />
 
   <div class="container">
 
@@ -77,8 +76,8 @@
                   <td>{{ assignment.title }}</td>
                   <td>
                     <a href="{{url_for('files.download', file_id = upload.id)}}"
-                      class="btn btn-primary btn-sm"><i class="fa fa-file-download"></i> Download</a>
-                    <a href="{{url_for('files.delete_file', upload_id = upload.id)}}" class="btn btn-warning btn-sm"><i
+                      class="btn btn-primary btn-sm m-1"><i class="fa fa-file-download"></i> Download</a>
+                    <a href="{{url_for('files.delete_file', upload_id = upload.id)}}" class="btn btn-warning btn-sm m-1"><i
                         class="fa fa-trash-alt"></i> Delete</a>
                   </td>
                 </tr>
