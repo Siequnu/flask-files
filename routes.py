@@ -7,7 +7,7 @@ from app import db
 from app.files import bp, models, forms
 from app.models import Comment, Download, Upload, Turma, ClassLibraryFile, Enrollment, Assignment, LibraryUpload, LibraryDownload, User
 
-import random, os, re
+import random, os, re, base64
 
 # API route to get a filename from a file
 @bp.route("/api/filename/<file_id>")
@@ -137,13 +137,14 @@ def download_random_file(assignment_id):
 
 # Delete a file
 @bp.route("/delete/<upload_id>", methods=['GET', 'POST'])
+@bp.route("/delete/<upload_id>/redirect/<redirect_url>", methods=['GET', 'POST'])
 @login_required
-def delete_file(upload_id):
+def delete_file(upload_id, redirect_url = False):
 	if current_user.is_authenticated and app.models.is_admin(current_user.username):
 		
 		file = Upload.query.get(upload_id)
 		if file is None:
-			abort (403)
+			abort (404)
 		
 		# Is the student who uploaded this file part of this teacher's class?
 		if current_user.is_superintendant is not True:
@@ -159,12 +160,19 @@ def delete_file(upload_id):
 			app.files.models.delete_upload(upload_id)
 			
 			flash ('The file, and any associated comments or comment uploads were successfully deleted.', 'success')
-			return redirect(url_for('files.file_stats'))
+			if not redirect_url:
+				redirect_url = url_for('files.file_stats')
+			else: 
+				base64_bytes = redirect_url.encode('ascii')
+				message_bytes = base64.b64decode(base64_bytes)
+				redirect_url = message_bytes.decode('ascii')
+			return redirect(redirect_url)
 		
-		return render_template('confirmation_form.html',
-							   title = 'Delete file?',
-							   confirmation_message = 'Are you sure you want to delete ' + file.original_filename + '?',
-							   form = form)
+		return render_template(
+			'confirmation_form.html',
+			title = 'Delete file?',
+			confirmation_message = 'Are you sure you want to delete ' + file.original_filename + '?',
+			form = form)
 	abort (403)
 		
 
