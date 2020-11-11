@@ -228,8 +228,8 @@ def download (file_id, rename = True):
 
 # Student form to upload a file to an assignment.
 # An admin can override this with a student number, to submit work for them.
-@bp.route('/upload/<assignment_id>',methods=['GET', 'POST'])
-@bp.route('/upload/<assignment_id>/<user_id>',methods=['GET', 'POST'])
+@bp.route('/upload/<assignment_id>', methods=['GET', 'POST'])
+@bp.route('/upload/<assignment_id>/<user_id>', methods=['GET', 'POST'])
 @login_required
 def upload_file(assignment_id, user_id = False):
 	# If we are in "view as student mode", quit, as we don't want teachers posing as students messing up the assignment distribution algo
@@ -238,6 +238,7 @@ def upload_file(assignment_id, user_id = False):
 		return (redirect (url_for ('main.index')))
 	
 	# Only admin can force submit for another student
+	#¡# If not superintendant, needs to check if the student is in this teacher's class
 	if user_id:
 		if not current_user.is_authenticated and app.models.is_admin(current_user.username):
 			abort (403)
@@ -252,19 +253,28 @@ def upload_file(assignment_id, user_id = False):
 		if 'file' not in request.files:
 			flash('No file uploaded. Please try again or contact your tutor.', 'warning')
 			return redirect(request.url)
+		
 		file = request.files['file']
+		
 		if re.findall(r'[\u4e00-\u9fff]+', file.filename) != []:
 			# There are Chinese characters in the filename
 			flash('Your filename contains Chinese characters. Please use only English letters and numbers in your filename.', 'warning')
 			return redirect(request.url)
+		
 		if file.filename == '':
 			flash('The filename is blank. Please rename the file.', 'warning')
 			return redirect(request.url)
+		
 		if file and models.allowed_file_extension(file.filename):
 			models.save_assignment_file(file, assignment_id, user_id)
 			original_filename = models.get_secure_filename(file.filename)
 			flash('Your file ' + str(original_filename) + ' was submitted successfully.', 'success')
-			return redirect(url_for('assignments.view_assignments'))
+			
+			if current_user.is_admin:
+				return redirect(url_for('assignments.view_assignment_details', assignment_id = assignment_id))
+			else:
+				return redirect(url_for('assignments.view_assignments'))
+		
 		else:
 			flash('You can not upload this kind of file. Please use an iWork, Office or PDF document.', 'warning')
 			return redirect(url_for('assignments.view_assignments'))
