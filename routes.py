@@ -424,13 +424,26 @@ def upload_library_file():
 		form.target_turmas.choices = [(turma.id, turma.turma_label) for turma in classes]
 		if form.validate_on_submit():
 			file = form.library_upload_file.data
-			description = form.description.data
-			title = form.title.data
-			target_turmas = form.target_turmas.data
-			app.files.models.new_library_upload (
-				file, title, description, target_turmas)
-			flash('New file successfully added to the library!', 'success')
-			return redirect(url_for('files.class_library'))
+			
+			if re.findall(r'[\u4e00-\u9fff]+', file.filename) != []:
+				# There are Chinese characters in the filename
+				flash('Your filename contains Chinese characters. Please use only English letters and numbers in your filename.', 'warning')
+				return redirect(url_for('files.class_library'))
+			
+			if file.filename == '':
+				flash('The filename is blank. Please rename the file.', 'warning')
+				return redirect(url_for('files.class_library'))
+			
+			if file and models.allowed_file_extension(file.filename):
+				description = form.description.data
+				title = form.title.data
+				target_turmas = form.target_turmas.data
+				app.files.models.new_library_upload (
+					file, title, description, target_turmas)
+				flash('New file successfully added to the library!', 'success')
+				return redirect(url_for('files.class_library'))
+			else:
+				flash('You can not upload this kind of file. Please use an iWork, Office or PDF document.', 'warning')
 		return render_template('files/upload_library_file.html', title='Upload library file', form=form)
 	abort (403)
 	
