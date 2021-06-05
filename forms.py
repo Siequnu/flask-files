@@ -10,6 +10,7 @@ class LibraryUploadForm(FlaskForm):
 	title = StringField('Library upload title:', validators=[DataRequired()])
 	description = StringField('Description:', validators=[DataRequired()])
 	target_turmas = SelectMultipleField('For classes:', coerce=int, validators=[DataRequired()])
+	email_students = BooleanField('Notify students by email', default=False)
 	library_upload_form_submit = SubmitField('Upload new file')
 	
 	

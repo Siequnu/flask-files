@@ -438,8 +438,11 @@ def upload_library_file():
 				description = form.description.data
 				title = form.title.data
 				target_turmas = form.target_turmas.data
+				email_students = form.email_students
+				
 				app.files.models.new_library_upload (
-					file, title, description, target_turmas)
+					file, title, description, target_turmas, email_students)
+				
 				flash('New file successfully added to the library!', 'success')
 				return redirect(url_for('files.class_library'))
 			else:
